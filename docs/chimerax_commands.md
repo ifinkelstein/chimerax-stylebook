@@ -36,7 +36,7 @@ palette ^palette-name                      reverse
 range low,high | full
 ```
 
-Built-in palettes: `rainbow`, `redblue`, `bluered`, `cyanmaroon`, `grayscale`, `lipophilicity`, `alphafold`, `esmfold`, `pae`, `paegreen`, plus ColorBrewer as `Name-N` (qualitative Set1/Set2/Dark2/Paired..., sequential Blues/Greens/YlOrRd..., diverging RdBu/PuOr/PiYG/BrBG...). Viridis, magma, cividis are **not** built in. Define them as explicit stops; this repo ships them in `palettes/lab_colors.cxc` as aliases you use through `palette` strings (see `palettes/continuous.md`).
+Built-in palettes: `rainbow`, `redblue`, `bluered`, `cyanmaroon`, `grayscale`, `lipophilicity`, `alphafold`, `esmfold`, `pae`, `paegreen`, plus ColorBrewer as `Name-N` (qualitative Set1/Set2/Dark2/Paired..., sequential Blues/Greens/YlOrRd..., diverging RdBu/PuOr/PiYG/BrBG...). Viridis, magma, cividis are **not** built in. Define them as explicit stops; example 06 and example 13 show the stop syntax.
 
 Gotcha: an explicit `range` overrides values in a `value,color` palette.
 
@@ -101,9 +101,9 @@ Residue-level attribute names may need the `r:` prefix in `color byattribute` wh
 
 ```
 surface #1/A
-coulombic #1/A surfaces #1.1 [palette ...] [range -10,10] [key true]
+coulombic #1/A palette redblue range -10,10 key true
 coulombic protein palette ^RdBu-7 range -8,8
-mlp #1 surfaces #1.1 [palette lipophilicity] [range -20,20] [key true]
+mlp #1 palette lipophilicity range -20,20 key true
 ```
 
 Coulombic adds hydrogens and charges to a copy; the structure is not modified. Default palette is red-white-blue, range -10 to 10 kcal/(mol e).

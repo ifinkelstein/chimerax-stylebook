@@ -18,23 +18,23 @@ view pad 0.05
 
 nucleotides nucleic ladder radius 0.35
 2dlabels text "ladder" xpos 0.04 ypos 0.94 size 24 color lab_black bold true
-save na_ladder.png width 1200 supersample 3
+save na_ladder.png width 2000 supersample 3
 
 2dlabels delete all
 nucleotides nucleic slab shape box
 2dlabels text "slab" xpos 0.04 ypos 0.94 size 24 color lab_black bold true
-save na_slab.png width 1200 supersample 3
+save na_slab.png width 2000 supersample 3
 
 2dlabels delete all
 nucleotides nucleic fill
 show nucleic atoms
 style nucleic stick
 2dlabels text "fill" xpos 0.04 ypos 0.94 size 24 color lab_black bold true
-save na_fill.png width 1200 supersample 3
+save na_fill.png width 2000 supersample 3
 
 2dlabels delete all
 nucleotides nucleic atoms
 show nucleic atoms
 style nucleic stick
 2dlabels text "atoms" xpos 0.04 ypos 0.94 size 24 color lab_black bold true
-save na_atoms.png width 1200 supersample 3
+save na_atoms.png width 2000 supersample 3

@@ -1,0 +1,63 @@
+# Example 13: sequence conservation, ConSurf grammar with a better palette.
+#
+# ConSurf's conventions are good and worth keeping: nine percentile grades
+# rather than a raw continuous score, variable to conserved read as a
+# single direction, a separate neutral category for residues with too
+# little data, and a surface render so the conserved patches show up as
+# surface patches rather than buried ribbon.
+#
+# What we change is the palette. ConSurf ships turquoise through white to
+# maroon, which is hard to read at the pale end and is not color-blind
+# safe. We use ColorBrewer BrBG reversed: teal for variable, cream in the
+# middle, brown for conserved. Same direction, same nine steps, safe under
+# all three common forms of color blindness, and it still reads in
+# grayscale because it is monotonic in lightness from each end.
+#
+# Prerequisite, run once:  ./build_alignment.sh
+# That fetches Cas9 orthologs from UniProt and aligns them with MAFFT.
+#
+# Conservation is a property of the sequence set, not of the protein.
+# This one is 117 Cas9-family orthologs of 1200-1500 residues. A set of
+# close Streptococcus relatives would give a different and equally valid
+# answer. Always state the set in the caption.
+open 4oo8
+delete /D-F
+open ../../palettes/lab_colors.cxc
+open ../../presets/Base/publication_white.cxc
+
+open cas9_orthologs.afa
+
+# Associate with the SpCas9 sequence explicitly. Left to itself ChimeraX
+# picks the best-scoring sequence in the alignment, which here is a
+# Staphylococcus entry, and the conservation would be mapped through the
+# wrong column numbering.
+sequence disassociate #1/A cas9_orthologs.afa
+sequence associate #1/A cas9_orthologs.afa:1
+sequence refreshAttrs cas9_orthologs.afa
+
+runscript compute_grades.py
+open consurf_grade.defattr
+
+# Nine discrete grades. colorTreatment distinct in the key, and a
+# value,color palette here, so no interpolation blurs the bin edges.
+color byattribute r:consurfGrade /A palette "0,#BFBFBF:1,#01665E:2,#35978F:3,#80CDC1:4,#C7EAE5:5,#F5F0E4:6,#F6E8C3:7,#DFC27D:8,#BF812D:9,#8C510A" range 0,9
+
+# Nucleic acids neutral: conservation is the subject
+color /B,C lab_gray_p
+
+view
+turn y 30
+view pad 0.05
+
+key "#01665E:variable" #35978F: #80CDC1: #C7EAE5: #F5F0E4: #F6E8C3: #DFC27D: #BF812D: "#8C510A:conserved" pos 0.04,0.32 size 0.03,0.36 fontSize 16 colorTreatment distinct labelSide right/bottom
+2dlabels text "conservation grade" xpos 0.03 ypos 0.74 size 17 color lab_black bold true
+2dlabels text "117 Cas9 orthologs" xpos 0.03 ypos 0.70 size 15 color lab_gray
+2dlabels text "SpCas9  4OO8" xpos 0.03 ypos 0.04 size 18 color lab_gray
+save conservation_cartoon.png width 3000 supersample 3
+
+# Surface panel: ConSurf's default view, and the one that actually answers
+# "is the conserved patch on the outside where something could bind"
+hide /A cartoons
+surface /A
+color byattribute r:consurfGrade /A palette "0,#BFBFBF:1,#01665E:2,#35978F:3,#80CDC1:4,#C7EAE5:5,#F5F0E4:6,#F6E8C3:7,#DFC27D:8,#BF812D:9,#8C510A" range 0,9 target s
+save conservation_surface.png width 3000 supersample 3

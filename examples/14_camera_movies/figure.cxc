@@ -1,0 +1,88 @@
+# Example 14: the three camera movies, and when each one is honest.
+#
+# SPIN: a full 360 about the vertical axis. Use it for a structure whose
+# shape is the point, or as a title loop. It shows every face, and it is
+# the only one of the three that is genuinely lossless: nothing is hidden
+# at any moment that was not visible a second earlier.
+#
+# ROCK: a small oscillation, 15 to 25 degrees. Use it to give depth to a
+# still panel without the viewer losing their place. A full spin on a
+# complicated machine is disorienting; a rock is not. Keep the amplitude
+# small enough that the reader never loses the orientation they started
+# with, which is the whole reason to prefer it over a spin.
+#
+# ZOOM: pull in from the whole assembly to one site. Use it to connect an
+# overview panel to a zoom panel in a talk, so the audience knows where
+# the close-up lives. Always zoom toward something you then label; a zoom
+# that lands on nothing is motion for its own sake.
+#
+# Two rules for all three. Move the camera or the model, never both at
+# once, or the viewer cannot tell which. And render at the size you will
+# present; scaling a movie up afterwards is visibly soft.
+open 4oo8
+delete /D-F
+open ../../palettes/lab_colors.cxc
+open ../../presets/Base/publication_white.cxc
+
+select /A
+open ../../palettes/cas9_domains.cxc
+select clear
+color /B lab_sgrna
+color /C lab_target
+
+view orient
+turn y 30
+view pad 0.05
+windowsize 900 675
+
+2dlabels text "SpCas9  R-loop  4OO8" xpos 0.03 ypos 0.94 size 20 color lab_black bold true
+
+# --- spin: 360 degrees, 180 frames at 30 fps = 6 s ---
+2dlabels create mode text "spin" xpos 0.03 ypos 0.88 size 18 color lab_gray bold true
+movie record supersample 3 size 900,675
+roll y 2 180
+wait 180
+movie encode spin.mp4 format h264 quality high framerate 30
+
+# --- rock: 20 degrees each way, returning to the start ---
+2dlabels change mode text "rock"
+movie record supersample 3 size 900,675
+# rock N makes the rotation oscillate with a period of N frames
+turn y 1 120 rock 60
+wait 120
+movie encode rock.mp4 format h264 quality high framerate 30
+
+# --- zoom: whole complex in to the HNH domain, then hold ---
+# Do not use the zoom command for this. zoom multiplies magnification
+# about the current centre, so on a buried target it flies through the
+# surface and ends inside the protein looking at backfaces. Instead name
+# the two framings you want and let view interpolate between them: the
+# camera travels to a composition you have already checked.
+2dlabels change mode text "zoom"
+view orient
+turn y 30
+view pad 0.05
+view name wide
+# pad must be in the same command as the spec. On its own line it
+# re-frames every displayed model instead of the selection.
+view /A:775-908 pad 0.25
+view name close
+view wide
+
+movie record supersample 3 size 900,675
+wait 20
+view close 90
+wait 90
+2dlabels create site text "HNH nuclease domain" xpos 0.03 ypos 0.82 size 18 color lab_hnh bold true
+wait 40
+movie encode zoom.mp4 format h264 quality high framerate 30
+view wide
+
+# A still from each, for the README
+2dlabels change site visibility false
+2dlabels change mode text "spin"
+view orient
+turn y 30
+view pad 0.05
+cofr frontCenter
+save camera_start.png width 2400 supersample 3

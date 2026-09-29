@@ -18,4 +18,4 @@ key alphafold :0 :50 :70 :90 :100 pos 0.04,0.3 size 0.03,0.4 fontSize 17 labelSi
 2dlabels text "pLDDT" xpos 0.03 ypos 0.74 size 18 color lab_black bold true
 2dlabels text "AlphaFold DB  Q99ZW2" xpos 0.03 ypos 0.04 size 18 color lab_gray
 
-save alphafold_plddt.png width 1800 supersample 3
+save alphafold_plddt.png width 3000 supersample 3

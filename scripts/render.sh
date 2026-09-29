@@ -38,5 +38,10 @@ for d in "$@"; do
     [ -f "$png" ] || continue
     if [ ! -s "$png" ]; then echo "   EMPTY $png"; fail=1; fi
   done
+
+  # Trim the background border and stamp 300 dpi. ChimeraX pads its own
+  # framing and writes 144 dpi, so a raw export wastes pixels and reports
+  # the wrong print resolution.
+  [ "${NO_FINISH:-0}" = "1" ] || bash "$REPO/scripts/finish.sh" "$d" >/dev/null
 done
 exit $fail

@@ -35,16 +35,16 @@ view #1/A|#2/A|#3/B pad 0.25
 
 hide #2,3 models
 2dlabels text "apo  4CMP" xpos 0.04 ypos 0.94 size 22 color lab_black bold true
-save state1_apo.png width 1800 supersample 3
+save state1_apo.png width 3000 supersample 3
 
 hide #1 models
 show #2 models
 2dlabels delete all
 2dlabels text "binary  4ZT0" xpos 0.04 ypos 0.94 size 22 color lab_black bold true
-save state2_binary.png width 1800 supersample 3
+save state2_binary.png width 3000 supersample 3
 
 hide #2 models
 show #3 models
 2dlabels delete all
 2dlabels text "R-loop  5F9R" xpos 0.04 ypos 0.94 size 22 color lab_black bold true
-save state3_rloop.png width 1800 supersample 3
+save state3_rloop.png width 3000 supersample 3

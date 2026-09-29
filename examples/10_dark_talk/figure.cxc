@@ -21,4 +21,4 @@ view pad 0.05
 2dlabels text "sgRNA" xpos 0.04 ypos 0.82 size 20 color lab_sgrna bold true
 2dlabels text "target DNA" xpos 0.04 ypos 0.77 size 20 color lab_target bold true
 
-save dark_talk.png width 1920 supersample 3
+save dark_talk.png width 3000 supersample 3

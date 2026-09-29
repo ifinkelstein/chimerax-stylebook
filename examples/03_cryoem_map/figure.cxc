@@ -31,7 +31,7 @@ graphics silhouettes false
 lighting soft
 key lab_rec1:REC1 lab_rec2:REC2 lab_rec3:REC3 lab_hnh:HNH lab_ruvc:RuvC lab_pi:PI lab_sgrna:sgRNA "lab_target:target DNA" "lab_nontarget:non-target" pos 0.03,0.08 size 0.025,0.45 fontSize 16 colorTreatment distinct labelSide right/bottom labelOffset 4
 2dlabels text "EMD-24838  2.8 Å" xpos 0.04 ypos 0.94 size 20 color lab_black bold true
-save map_overview.png width 1800 supersample 3
+save map_overview.png width 3000 supersample 3
 
 # --- Panel B: model with its own density on top ---
 key delete
@@ -45,4 +45,4 @@ volume zone #2 nearAtoms /A:775-908 range 3
 view /A:775-908
 view pad 0.12
 2dlabels text "HNH  density" xpos 0.04 ypos 0.94 size 20 color lab_black bold true
-save map_zoom.png width 1800 supersample 3
+save map_zoom.png width 3000 supersample 3

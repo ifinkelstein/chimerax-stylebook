@@ -50,3 +50,13 @@ color name lab_hnh #F0E442
 color name lab_ruvc #E0AFCA
 color name lab_bh #D55E00
 color name lab_pi #C2C2C2
+
+# Ordered five-step ramp for a reaction coordinate or a state series.
+# Use the same ramp for the structures, the progression arrow and any
+# bar or pie of state occupancy, so the reader learns it once.
+# Teal to orange, monotonic in lightness, distinguishable in grayscale.
+color name lab_state1 #0A6E6E
+color name lab_state2 #5FB3B3
+color name lab_state3 #E8D8A0
+color name lab_state4 #E8912C
+color name lab_state5 #A34A14

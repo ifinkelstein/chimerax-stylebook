@@ -1,0 +1,73 @@
+# Example 11: a reaction coordinate as an ordered color ramp.
+# The five states of multi-turnover SpCas9 from Kiernan et al. 2025,
+# Nat Commun 16:5681 (Taylor lab): pre-activation, precleavage,
+# checkpoint, product, dissociated.
+#
+# Rule: when panels are steps in a process, do not give them categorical
+# colors. Use one ordered ramp, assign it in process order, and reuse the
+# same ramp everywhere else the states appear: the progression arrow, a
+# bar of class occupancy, the map thumbnails. The reader learns it once.
+#
+# The ramp here is teal to orange, monotonic in lightness so it survives
+# grayscale printing. Defined as lab_state1..5 in palettes/lab_colors.cxc.
+open 9eak
+open 9eal
+open 9ed9
+open 9eda
+open 9edb
+open ../../palettes/lab_colors.cxc
+open ../../presets/Base/publication_white.cxc
+
+# Superpose every state on the first
+matchmaker #2/A to #1/A
+matchmaker #3/A to #1/A
+matchmaker #4/A to #1/A
+matchmaker #5/A to #1/A
+
+# One ramp step per state, protein only. Nucleic acids stay neutral so the
+# ramp reads as the process coordinate and not as a chain identity.
+color #1/A lab_state1
+color #2/A lab_state2
+color #3/A lab_state3
+color #4/A lab_state4
+color #5/A lab_state5
+color nucleic lab_gray_p
+
+view #1/A
+turn y 30
+view #1/A pad 0.08
+
+hide #2,3,4,5 models
+2dlabels text "I  pre-activation" xpos 0.03 ypos 0.94 size 22 color lab_state1 bold true
+save state1.png width 2800 supersample 3
+
+hide #1 models
+show #2 models
+2dlabels delete all
+2dlabels text "II  precleavage" xpos 0.03 ypos 0.94 size 22 color lab_state2 bold true
+save state2.png width 2800 supersample 3
+
+hide #2 models
+show #3 models
+2dlabels delete all
+2dlabels text "III  checkpoint" xpos 0.03 ypos 0.94 size 22 color lab_state3 bold true
+save state3.png width 2800 supersample 3
+
+hide #3 models
+show #4 models
+2dlabels delete all
+2dlabels text "IV  product" xpos 0.03 ypos 0.94 size 22 color lab_state4 bold true
+save state4.png width 2800 supersample 3
+
+hide #4 models
+show #5 models
+2dlabels delete all
+2dlabels text "V  dissociated" xpos 0.03 ypos 0.94 size 22 color lab_state5 bold true
+save state5.png width 2800 supersample 3
+
+# The ramp as its own legend strip, to sit under the row of panels or
+# inside the progression arrow in the final layout.
+hide #5 models
+2dlabels delete all
+key lab_state1:I lab_state2:II lab_state3:III lab_state4:IV lab_state5:V pos 0.08,0.42 size 0.84,0.16 fontSize 30 colorTreatment distinct labelSide right/bottom
+save ramp_legend.png width 2800 supersample 3

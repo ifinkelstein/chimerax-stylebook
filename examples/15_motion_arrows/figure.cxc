@@ -1,0 +1,67 @@
+# Example 15: arrows showing which parts moved, and how far.
+# Checkpoint state 7Z4L to catalytic state 7Z4J, Pacesa et al. 2022,
+# Nature 609:191. Arrows run from each domain's start centroid to its end
+# centroid, drawn as a cylinder shaft plus a cone head.
+#
+# This is the still-figure counterpart to the morph in example 12. Use an
+# arrow figure when the reader needs to measure the motion, a morph when
+# they need to feel it. A paper usually wants both: the arrows in the
+# figure, the morph in the supplement.
+#
+# Three things make an arrow figure honest, and all three are easy to get
+# wrong:
+#
+#   1. Superpose on something that does not move. Arrows are always
+#      relative to the reference. Here the superposition is on the RuvC
+#      core, so every arrow means "relative to RuvC". Say which reference
+#      a figure used, because a different one gives different arrows from
+#      identical coordinates.
+#   2. Draw arrows at true length. Scaling them up for visibility turns a
+#      figure into a cartoon. If a motion is too small to see, print the
+#      distance instead.
+#   3. Do not draw short arrows at all. Below roughly 1.5 A the direction
+#      is coordinate error, but a reader reads any arrow as a real
+#      direction. draw_arrows.py drops those and logs them instead.
+open 7z4l
+open 7z4j
+open ../../palettes/lab_colors.cxc
+
+delete #1/A,C,D
+delete #2/A,C,c,D
+
+# Superpose on the RuvC core only, so the arrows measure motion relative
+# to it rather than a compromise fit over the whole protein.
+matchmaker #2/B:1-59,909-1098 to #1/B:1-59,909-1098
+
+open ../../presets/Base/publication_white.cxc
+
+# Start state solid, end state ghosted behind it. The arrow carries the
+# direction, so the second copy only needs to establish the destination.
+color #1/B lab_gray_p
+color #2/B lab_gray_p
+transparency #1 55
+transparency #2 88
+
+# Colour the moving parts in the start state only
+color #1/B:775-908 lab_hnh
+color #1/B:906-918 lab_vermillion
+color #1/B:497-713 lab_rec3
+color #1/B:180-307 lab_rec2
+
+cartoon style xsection oval width 1.2 thickness 0.35
+
+runscript draw_arrows.py
+
+view #1
+turn y -30
+view #1 pad 0.08
+
+2dlabels text "checkpoint to catalytic" xpos 0.03 ypos 0.95 size 22 color lab_black bold true
+2dlabels text "7Z4L to 7Z4J, superposed on RuvC" xpos 0.03 ypos 0.91 size 15 color lab_gray
+2dlabels text "HNH" xpos 0.03 ypos 0.84 size 18 color lab_hnh bold true
+2dlabels text "L1 / L2 linkers" xpos 0.03 ypos 0.80 size 18 color lab_vermillion bold true
+2dlabels text "REC2" xpos 0.03 ypos 0.76 size 18 color lab_rec2 bold true
+2dlabels text "REC3" xpos 0.03 ypos 0.72 size 18 color lab_rec3 bold true
+2dlabels text "arrows at true length, start to end centroid" xpos 0.03 ypos 0.04 size 15 color lab_gray
+
+save motion_arrows.png width 3000 supersample 3

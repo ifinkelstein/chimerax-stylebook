@@ -1,0 +1,70 @@
+# Example 12: a morph movie with captions and pauses at key frames.
+# HNH nuclease domain docking in SpCas9, between two observed states:
+# the checkpoint state 7Z4L, where HNH is ordered but undocked, and the
+# catalytic state 7Z4J, where it is docked on the scissile phosphate.
+# Pacesa et al. 2022, Nature 609:191.
+#
+# A morph is an interpolation, not data. It shows how two endpoints
+# differ; it does not show a pathway, and the intermediate frames are not
+# observed structures. Say so on the movie, as the caption here does.
+#
+# Choosing the endpoints is the whole job. A morph silently drops every
+# residue not modelled in both inputs, so if the domain you want to
+# animate is disordered in one endpoint it vanishes from the movie and
+# you animate nothing. Check before rendering:
+#     morph #1,2 frames 2 modelId #9
+#     info residues #9/B
+# and confirm the residue range you care about is in the list. The
+# Taylor-lab multi-turnover series looks like the obvious source here and
+# is the wrong choice: HNH is unmodelled in one of those states, so
+# residues 764 to 924 are absent from that morph entirely.
+#
+# Rules for a movie:
+#   hold on each endpoint long enough to read the caption, about 1 s
+#   caption every held frame, so a viewer joining mid-loop knows the state
+#   one continuous camera; do not rotate and morph at the same time
+#   pin the morph model id, never guess it from the open order
+open 7z4l
+open 7z4j
+open ../../palettes/lab_colors.cxc
+
+# Protein chain only. Chain B is the protein in both entries, not A.
+delete #1/A,C,D
+delete #2/A,C,c,D
+
+# corkscrew keeps a rotating domain from sweeping through the body of the
+# protein the way a straight-line interpolation can.
+morph #1,2 frames 90 method corkscrew cartesian false modelId #9
+
+open ../../presets/Base/publication_white.cxc
+hide #1,2 models
+color #9 lab_gray_p
+color #9/B:775-908 lab_hnh
+color #9/B:906-918 lab_vermillion
+cartoon style #9 xsection oval width 1.4 thickness 0.4
+
+view #9
+turn y 30
+view #9 pad 0.06
+windowsize 1000 750
+
+2dlabels text "SpCas9  HNH docking" xpos 0.03 ypos 0.95 size 22 color lab_black bold true
+2dlabels text "HNH" xpos 0.03 ypos 0.83 size 18 color lab_hnh bold true
+2dlabels text "L2 linker" xpos 0.03 ypos 0.79 size 18 color lab_vermillion bold true
+2dlabels text "interpolation between two observed states, not a measured pathway" xpos 0.03 ypos 0.02 size 14 color lab_gray
+2dlabels create caption text "checkpoint  7Z4L" xpos 0.03 ypos 0.89 size 20 color lab_state1 bold true
+
+movie record supersample 3 size 1000,750
+
+# Hold on the checkpoint state
+coordset #9 1,1 ; wait 30
+
+# Checkpoint to catalytic
+2dlabels change caption text "docking" color lab_gray
+coordset #9 1,90 ; wait 90
+
+# Hold on the catalytic state
+2dlabels change caption text "catalytic  7Z4J" color lab_state4
+coordset #9 90,90 ; wait 40
+
+movie encode hnh_morph.mp4 format h264 quality high framerate 30

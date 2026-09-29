@@ -14,7 +14,11 @@ open ../../presets/Base/publication_white.cxc
 
 surface /A
 hide /A cartoons
-coulombic /A surfaces #1.1 palette redblue range -10,10
+# Do not pass "surfaces #1.1" here. Pseudobond groups take submodel IDs
+# ahead of the surface, so the hardcoded number silently colors the wrong
+# model and the surface comes out blank. With surfaces omitted, coulombic
+# finds the surface belonging to the atoms itself.
+coulombic /A palette redblue range -10,10
 
 # Nucleic acids stay opaque and saturated in front of the surface
 color /B lab_sgrna
@@ -29,4 +33,4 @@ key redblue :-10 :0 :10 pos 0.04,0.3 size 0.03,0.4 fontSize 17 labelSide right/b
 2dlabels text "(kcal/mol e)" xpos 0.03 ypos 0.72 size 17 color lab_black bold true
 2dlabels text "SpCas9  4OO8" xpos 0.03 ypos 0.04 size 18 color lab_gray
 
-save electrostatics.png width 1800 supersample 3
+save electrostatics.png width 3000 supersample 3

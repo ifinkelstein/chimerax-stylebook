@@ -57,4 +57,4 @@ view pad 0.6
 2dlabels text "PAM recognition" xpos 0.03 ypos 0.94 size 22 color lab_black bold true
 2dlabels text "4UN3" xpos 0.03 ypos 0.04 size 18 color lab_gray
 
-save interface_zoom.png width 1800 supersample 3
+save interface_zoom.png width 3000 supersample 3

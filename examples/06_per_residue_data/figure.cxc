@@ -34,4 +34,4 @@ key #fde725:3 #5ec962:8 #21918c:14 #3b528b:19 #440154:25 pos 0.04,0.3 size 0.03,
 2dlabels text "nucleic-acid atom (Å)" xpos 0.03 ypos 0.72 size 17 color lab_black bold true
 2dlabels text "SpCas9  4OO8" xpos 0.03 ypos 0.04 size 18 color lab_gray
 
-save per_residue_data.png width 1800 supersample 3
+save per_residue_data.png width 3000 supersample 3
