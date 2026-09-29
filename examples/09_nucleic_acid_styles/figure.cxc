@@ -1,0 +1,40 @@
+# Example 09: the four nucleic-acid representations, same view each time.
+# sgRNA and target DNA from 4OO8 with the protein removed.
+#
+# Pick by how much base detail the argument needs:
+#   ladder     overviews. Backbone plus a thin rung. Cheapest to read.
+#   slab       when base stacking or a kink is the point.
+#   fill       close contacts where you must see which base edge is used.
+#   atoms      the tightest zooms, chemistry-level detail.
+open 4oo8
+delete /A,D,E,F
+open ../../palettes/lab_colors.cxc
+open ../../presets/Base/publication_white.cxc
+
+color /B lab_sgrna
+color /C lab_target
+view
+view pad 0.05
+
+nucleotides nucleic ladder radius 0.35
+2dlabels text "ladder" xpos 0.04 ypos 0.94 size 24 color lab_black bold true
+save na_ladder.png width 1200 supersample 3
+
+2dlabels delete all
+nucleotides nucleic slab shape box
+2dlabels text "slab" xpos 0.04 ypos 0.94 size 24 color lab_black bold true
+save na_slab.png width 1200 supersample 3
+
+2dlabels delete all
+nucleotides nucleic fill
+show nucleic atoms
+style nucleic stick
+2dlabels text "fill" xpos 0.04 ypos 0.94 size 24 color lab_black bold true
+save na_fill.png width 1200 supersample 3
+
+2dlabels delete all
+nucleotides nucleic atoms
+show nucleic atoms
+style nucleic stick
+2dlabels text "atoms" xpos 0.04 ypos 0.94 size 24 color lab_black bold true
+save na_atoms.png width 1200 supersample 3

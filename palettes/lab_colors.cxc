@@ -1,0 +1,52 @@
+# Finkelstein lab named colors for ChimeraX.
+# Load with:  open palettes/lab_colors.cxc
+# Then use names anywhere a color is accepted:  color /A lab_blue
+# ChimeraX does not allow trailing comments on command lines, so keep
+# comments on their own lines.
+#
+# Categorical (Okabe & Ito 2008, colorblind-safe). Same hexes as
+# github.com/ifinkelstein/dataviz-python so plots and structures match.
+color name lab_orange #E69F00
+color name lab_skyblue #56B4E9
+color name lab_green #009E73
+color name lab_yellow #F0E442
+color name lab_blue #0072B2
+color name lab_vermillion #D55E00
+color name lab_purple #CC79A7
+color name lab_black #000000
+color name lab_gray #999999
+
+# Pastel variants (60% color + 40% white). Use for large cartoon/surface
+# areas so saturated accents (sticks, ligands, mismatches) still pop.
+color name lab_orange_p #F0C566
+color name lab_skyblue_p #9AD2F2
+color name lab_green_p #66C5AB
+color name lab_yellow_p #F6EE8E
+color name lab_blue_p #66AAD1
+color name lab_vermillion_p #E69E66
+color name lab_purple_p #E0AFCA
+color name lab_gray_p #C2C2C2
+
+# Neutrals: BindCraft-style target surface, cryo-EM map, dark talk background
+color name lab_target_gray #D9D9D9
+color name lab_map_gray #BFBFBF
+color name lab_bg_dark #1B1B1F
+
+# Semantic aliases for nucleic acids. Change the mapping here, never in
+# figure scripts, so every figure updates together.
+# sgRNA = orange, target strand = blue, non-target strand = sky blue, PAM = vermillion
+color name lab_sgrna #E69F00
+color name lab_target #0072B2
+color name lab_nontarget #56B4E9
+color name lab_pam #D55E00
+
+# Semantic aliases for SpCas9 domains.
+# REC1 skyblue_p, REC2 blue_p, REC3 green_p, HNH yellow (saturated on purpose),
+# RuvC purple_p, bridge helix vermillion, PI/CTD gray_p
+color name lab_rec1 #9AD2F2
+color name lab_rec2 #66AAD1
+color name lab_rec3 #66C5AB
+color name lab_hnh #F0E442
+color name lab_ruvc #E0AFCA
+color name lab_bh #D55E00
+color name lab_pi #C2C2C2

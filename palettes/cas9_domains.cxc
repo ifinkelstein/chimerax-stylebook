@@ -1,0 +1,30 @@
+# SpCas9 domain coloring, Q99ZW2 numbering (1368 aa).
+#
+# Boundaries follow Nishimasu et al. 2014 Cell for the two-lobe scheme and
+# the three-way REC split used in the Doudna, Jinek and Taylor literature,
+# where REC3 = 497-713 (the construct crystallized as 8SCA). Nishimasu 2014
+# itself never uses the name REC3, so both schemes appear in the field;
+# state which one a figure uses.
+#
+# Apply to one protein chain by selecting it first:
+#     select /A
+#     open palettes/cas9_domains.cxc
+#     select clear
+# Requires lab_colors.cxc loaded first.
+#
+# RuvC-I
+color sel & :1-59 lab_ruvc
+# Bridge helix
+color sel & :60-93 lab_bh
+# REC1 is discontinuous: 94-179 and 308-496
+color sel & :94-179 lab_rec1
+color sel & :180-307 lab_rec2
+color sel & :308-496 lab_rec1
+color sel & :497-713 lab_rec3
+# RuvC-II, linker L1 (765-780) is inside this range
+color sel & :714-774 lab_ruvc
+color sel & :775-908 lab_hnh
+# RuvC-III, linker L2 (906-918) straddles the HNH boundary
+color sel & :909-1098 lab_ruvc
+# PAM-interacting domain / CTD, contains R1333 and R1335
+color sel & :1099-1368 lab_pi

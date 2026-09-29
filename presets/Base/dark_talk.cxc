@@ -1,0 +1,21 @@
+# Talk base style: dark background, full lighting with shadows,
+# no silhouettes (they vanish on dark anyway).
+set bgColor #1B1B1F
+lighting full
+lighting depthCue true
+graphics silhouettes false
+material dull
+camera ortho
+windowsize 1000 750
+hide atoms
+hide surfaces
+show cartoons
+cartoon style protein modeHelix default arrows true xsection oval width 1.6 thickness 0.4
+cartoon style nucleic xsection oval width 1.2 thickness 0.4
+show nucleic atoms
+hide solvent
+# Missing-loop pseudobonds carry "N residues" labels that clutter every panel
+hide pseudobonds
+hide ions
+style nucleic stick
+nucleotides nucleic ladder radius 0.35

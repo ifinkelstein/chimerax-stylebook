@@ -1,0 +1,25 @@
+# Example 01: domain architecture of SpCas9 in the ternary complex.
+# PDB 4OO8 (Nishimasu et al. 2014, Cell). Run from this folder:
+#   chimerax --exit figure.cxc
+open 4oo8
+delete /D-F
+open ../../palettes/lab_colors.cxc
+open ../../presets/Base/publication_white.cxc
+
+# Protein by domain, nucleic acids by role
+select /A
+open ../../palettes/cas9_domains.cxc
+select clear
+color /B lab_sgrna
+color /C lab_target
+
+# Orientation: standard "front" view used across all Cas9 examples
+view orient
+turn y 30
+view pad 0.05
+
+# Legend with the key command (colorTreatment distinct = categorical swatches)
+key "lab_target:target DNA" lab_sgrna:sgRNA lab_pi:PI lab_bh:BH lab_ruvc:RuvC lab_hnh:HNH lab_rec3:REC3 lab_rec2:REC2 lab_rec1:REC1 pos 0.03,0.08 size 0.025,0.45 fontSize 16 colorTreatment distinct labelSide right/bottom justification left labelOffset 4
+
+save domain_architecture.png width 2400 supersample 3
+save domain_architecture.cxs

@@ -1,0 +1,38 @@
+# Example 04: the target/binder convention.
+# PDB 5VW1, SpCas9(D10A/H840A)-sgRNA bound by the phage anti-CRISPR
+# protein AcrIIA4, which occupies the PAM-recognition site.
+# Yang & Patel 2017, Mol Cell 67:117.
+#
+# Rule from BindCraft: the given thing is a neutral surface, the thing the
+# panel is about is a saturated cartoon. Two colors, not ten.
+#
+# Chain IDs here are not the obvious ones: A = Cas9, B = AcrIIA4,
+# C = sgRNA. Always run "info chains" before writing selections.
+open 5vw1
+open ../../palettes/lab_colors.cxc
+open ../../presets/Base/publication_white.cxc
+
+# Target: Cas9 as a neutral surface, slightly transparent so the binder
+# stays visible where it packs against the protein
+surface /A
+color /A lab_gray_p target s
+transparency /A 25 target s
+hide /A cartoons
+
+# sgRNA present but quiet
+color /C lab_gray target acf
+
+# Binder: the only saturated color in the panel
+color /B lab_vermillion
+cartoon style /B xsection oval width 2.0 thickness 0.6
+
+view
+turn y 270
+view pad 0.05
+
+2dlabels text "SpCas9" xpos 0.03 ypos 0.94 size 22 color lab_gray bold true
+2dlabels text "sgRNA" xpos 0.03 ypos 0.89 size 22 color lab_gray bold true
+2dlabels text "AcrIIA4" xpos 0.03 ypos 0.84 size 22 color lab_vermillion bold true
+2dlabels text "5VW1" xpos 0.03 ypos 0.04 size 18 color lab_gray
+
+save binder_target.png width 1800 supersample 3

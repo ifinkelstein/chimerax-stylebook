@@ -1,0 +1,37 @@
+# Example 06: your own per-residue data painted onto a structure.
+# Computes each SpCas9 residue's distance to the nearest nucleic-acid atom
+# (4OO8), writes it as a defattr file, then colors by it. Swap the
+# calculation in compute_attribute.py for conservation, an HDX protection
+# factor, a deep-mutational-scanning score or a crosslink count.
+#
+# Rules:
+#   a continuous quantity gets a perceptually uniform sequential ramp,
+#   never a rainbow. Viridis is not built into ChimeraX, so write the stops.
+#   state the range explicitly. An implicit range moves when the data moves
+#   and two figures stop being comparable.
+#   always show the key, with units in the label.
+#   put the legend in a margin, never over the structure.
+open 4oo8
+delete /D-F
+open ../../palettes/lab_colors.cxc
+open ../../presets/Base/publication_white.cxc
+
+runscript compute_attribute.py
+open dna_proximity.defattr
+
+# Viridis stops, bright end at close contact
+color byattribute r:dnaProximity /A palette #fde725:#5ec962:#21918c:#3b528b:#440154 range 3,25 noValueColor lab_gray_p
+
+# Nucleic acids neutral: the data is the subject, not the DNA
+color /B,C lab_gray_p
+
+view
+turn y 30
+view pad 0.05
+
+key #fde725:3 #5ec962:8 #21918c:14 #3b528b:19 #440154:25 pos 0.04,0.3 size 0.03,0.4 fontSize 17 labelSide right/bottom colorTreatment blended
+2dlabels text "distance to nearest" xpos 0.03 ypos 0.76 size 17 color lab_black bold true
+2dlabels text "nucleic-acid atom (Å)" xpos 0.03 ypos 0.72 size 17 color lab_black bold true
+2dlabels text "SpCas9  4OO8" xpos 0.03 ypos 0.04 size 18 color lab_gray
+
+save per_residue_data.png width 1800 supersample 3

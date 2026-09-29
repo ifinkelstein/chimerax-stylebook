@@ -1,0 +1,24 @@
+# Publication base style: white background, soft ambient occlusion,
+# thin silhouettes, orthographic camera. Apply before any coloring.
+# Set windowsize BEFORE view/turn so framing matches the saved aspect.
+set bgColor white
+lighting soft
+lighting depthCue false
+graphics silhouettes true width 1.5 depthJump 0.01
+material dull
+camera ortho
+windowsize 1000 750
+hide atoms
+hide surfaces
+show cartoons
+cartoon style protein modeHelix default arrows true xsection oval width 1.6 thickness 0.4
+cartoon style nucleic xsection oval width 1.2 thickness 0.4
+# Nucleotide ladder rungs are only drawn where base atoms are displayed,
+# so show nucleic atoms, then let the ladder representation replace them.
+show nucleic atoms
+hide solvent
+# Missing-loop pseudobonds carry "N residues" labels that clutter every panel
+hide pseudobonds
+hide ions
+style nucleic stick
+nucleotides nucleic ladder radius 0.35

@@ -1,0 +1,24 @@
+# Example 10: the same structure styled for a projected talk slide.
+# Dark background, full lighting with shadows, no silhouettes, saturated
+# colors. Never submit this to a journal; never project the white version.
+open 4oo8
+delete /D-F
+open ../../palettes/lab_colors.cxc
+open ../../presets/Base/dark_talk.cxc
+
+select /A
+open ../../palettes/cas9_domains.cxc
+select clear
+color /B lab_sgrna
+color /C lab_target
+
+view orient
+turn y 30
+view pad 0.05
+
+2dlabels text "SpCas9  R-loop" xpos 0.04 ypos 0.93 size 26 color white bold true
+2dlabels text "HNH" xpos 0.04 ypos 0.87 size 20 color lab_hnh bold true
+2dlabels text "sgRNA" xpos 0.04 ypos 0.82 size 20 color lab_sgrna bold true
+2dlabels text "target DNA" xpos 0.04 ypos 0.77 size 20 color lab_target bold true
+
+save dark_talk.png width 1920 supersample 3

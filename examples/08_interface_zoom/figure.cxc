@@ -1,0 +1,60 @@
+# Example 08: an atomic zoom onto an interface.
+# PDB 4UN3, SpCas9(H840A) bound to a target with a 5'-TGG PAM on the
+# non-target strand. R1333 and R1335 read the two PAM guanines.
+# Anders et al. 2014, Nature 513:569.
+#
+# Chain IDs in 4UN3: A = sgRNA, B = Cas9, C = target strand,
+# D = non-target strand carrying the PAM. Not the obvious assignment.
+#
+# Rules on show here:
+#   context goes gray and thin so it reads as a line drawing
+#   everything far from the site is hidden outright, not just faded
+#   only the residues under discussion get sticks and color
+#   hydrogen bonds as thin black dashes, not the default cyan
+#   3D labels on a handful of residues only, with a filled background
+#   missing-loop pseudobonds hidden; their "8 residues" labels are clutter
+open 4un3
+open ../../palettes/lab_colors.cxc
+open ../../presets/Base/publication_white.cxc
+
+hide pseudobonds
+color #1 lab_gray_p
+cartoon style xsection oval width 0.9 thickness 0.25
+
+# Keep only what is near the PAM site
+select /B:1333,1335 :<16
+hide ~sel cartoons
+hide ~sel atoms
+select clear
+
+# PAM duplex colored, the rest of the DNA quiet
+color /C lab_gray_p target acf
+color /D lab_nontarget target acf
+color /D:2-4 lab_pam target acf
+nucleotides /C,D ladder radius 0.3
+
+# The two arginines, with heteroatom coloring on the foreground only
+show /B:1333,1335 atoms
+style /B:1333,1335 stick
+size stickRadius 0.16
+color /B:1333,1335 lab_vermillion target ac
+color /B:1333,1335 & N lab_blue target a
+color /B:1333,1335 & O lab_purple target a
+
+# PAM bases as filled rings so the contacted edges are visible
+show /D:2-4 atoms
+style /D:2-4 stick
+nucleotides /D:2-4 fill
+
+hbonds /B:1333,1335 restrict /D reveal true color lab_black radius 0.04 dashes 8 showDist false
+
+label /B:1333,1335 residues text "{0.name}{0.number}" height 1.1 color lab_black bgColor white offset 1.0,1.0,0
+label /D:2-4 residues text "{0.name}{0.number}" height 1.0 color lab_black bgColor white offset 1.0,-1.0,0
+
+view /B:1333,1335|/D:2-4
+view pad 0.6
+
+2dlabels text "PAM recognition" xpos 0.03 ypos 0.94 size 22 color lab_black bold true
+2dlabels text "4UN3" xpos 0.03 ypos 0.04 size 18 color lab_gray
+
+save interface_zoom.png width 1800 supersample 3

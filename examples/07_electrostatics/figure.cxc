@@ -1,0 +1,32 @@
+# Example 07: a continuous physical quantity on a surface.
+# Coulombic electrostatic potential on SpCas9 (4OO8), which makes the
+# positively charged nucleic-acid channel obvious.
+#
+# Rules: a quantity that diverges about zero gets a diverging palette and a
+# symmetric range. Red/white/blue is the field convention for electrostatic
+# potential, so we keep it rather than forcing Okabe-Ito; readers expect
+# negative red and positive blue here and a novel palette would mislead.
+# This is the one sanctioned exception to the house palette.
+open 4oo8
+delete /D-F
+open ../../palettes/lab_colors.cxc
+open ../../presets/Base/publication_white.cxc
+
+surface /A
+hide /A cartoons
+coulombic /A surfaces #1.1 palette redblue range -10,10
+
+# Nucleic acids stay opaque and saturated in front of the surface
+color /B lab_sgrna
+color /C lab_target
+
+view
+turn y 30
+view pad 0.05
+
+key redblue :-10 :0 :10 pos 0.04,0.3 size 0.03,0.4 fontSize 17 labelSide right/bottom
+2dlabels text "Coulombic potential" xpos 0.03 ypos 0.76 size 17 color lab_black bold true
+2dlabels text "(kcal/mol e)" xpos 0.03 ypos 0.72 size 17 color lab_black bold true
+2dlabels text "SpCas9  4OO8" xpos 0.03 ypos 0.04 size 18 color lab_gray
+
+save electrostatics.png width 1800 supersample 3

@@ -1,0 +1,48 @@
+# Example 03: a cryo-EM map, two ways.
+# PDB 7S4X with EMD-24838, a Cas9 checkpoint state from the Taylor lab.
+#
+# Panel A, overview: opaque map surface colored by the domain colors of the
+# model inside it, via color zone. No model shown, no mesh, no silhouettes.
+# Panel B, zoom: the model opaque with its own density drawn semi-transparent
+# in the same color on top, which is how you show that density supports a
+# feature without hiding the feature.
+open 7s4x
+open emdb:24838
+open ../../palettes/lab_colors.cxc
+open ../../presets/Base/publication_white.cxc
+
+# Color the model first: color zone copies these colors onto the map surface
+select /A
+open ../../palettes/cas9_domains.cxc
+select clear
+color /B lab_sgrna
+color /C,c lab_target
+color /D lab_nontarget
+
+view #1
+turn y 30
+view pad 0.05
+
+# --- Panel A: segmented opaque map ---
+hide #1 models
+volume #2 style surface level 0.08 step 1
+color zone #2 near #1 distance 6 sharpEdges true
+graphics silhouettes false
+lighting soft
+key lab_rec1:REC1 lab_rec2:REC2 lab_rec3:REC3 lab_hnh:HNH lab_ruvc:RuvC lab_pi:PI lab_sgrna:sgRNA "lab_target:target DNA" "lab_nontarget:non-target" pos 0.03,0.08 size 0.025,0.45 fontSize 16 colorTreatment distinct labelSide right/bottom labelOffset 4
+2dlabels text "EMD-24838  2.8 Å" xpos 0.04 ypos 0.94 size 20 color lab_black bold true
+save map_overview.png width 1800 supersample 3
+
+# --- Panel B: model with its own density on top ---
+key delete
+2dlabels delete all
+show #1 models
+graphics silhouettes true width 1.5
+color zone #2 near #1 distance 6 sharpEdges true
+volume #2 transparency 0.65
+# zone the map to the HNH domain so the panel shows one thing
+volume zone #2 nearAtoms /A:775-908 range 3
+view /A:775-908
+view pad 0.12
+2dlabels text "HNH  density" xpos 0.04 ypos 0.94 size 20 color lab_black bold true
+save map_zoom.png width 1800 supersample 3

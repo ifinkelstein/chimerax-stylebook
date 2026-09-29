@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Send commands to a running ChimeraX that has REST control enabled
+# (startup.cxc turns it on at port 60000). Semicolons separate commands.
+#
+#   scripts/cx 'open 4oo8; color /B lab_sgrna'
+#   scripts/cx "save $PWD/out.png width 2400 supersample 3"
+set -eu
+PORT="${CHIMERAX_PORT:-60000}"
+curl -s -G "http://127.0.0.1:${PORT}/run" --data-urlencode "command=$*"
+echo

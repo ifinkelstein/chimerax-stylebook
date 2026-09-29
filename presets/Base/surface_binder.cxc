@@ -1,0 +1,11 @@
+# BindCraft-style: target as flat gray surface, everything else cartoon.
+# Assumes the target chain is selected before applying.
+set bgColor white
+lighting soft
+graphics silhouettes true width 1.5
+camera ortho
+hide atoms
+show cartoons
+surface sel
+color sel lab_target_gray targets s
+transparency sel 0 targets s

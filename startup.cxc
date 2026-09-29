@@ -1,0 +1,14 @@
+# Optional startup file. In ChimeraX: Favorites > Settings > Startup,
+# paste into "Execute these commands at startup":
+#     open /ABSOLUTE/PATH/TO/chimerax-stylebook/startup.cxc
+# Also set "Custom presets folder" to /ABSOLUTE/PATH/TO/chimerax-stylebook/presets
+# so the presets appear under Presets in the toolbar.
+open ~/projects/chimerax-stylebook/palettes/lab_colors.cxc
+
+# Shorthand aliases
+alias pub open ~/projects/chimerax-stylebook/presets/Base/publication_white.cxc
+alias talk open ~/projects/chimerax-stylebook/presets/Base/dark_talk.cxc
+alias snap save ~/Desktop/chimerax_snap.png width 2400 supersample 3
+
+# Let scripts/cx and coding agents drive this session
+remotecontrol rest start port 60000
