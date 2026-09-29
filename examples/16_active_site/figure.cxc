@@ -1,0 +1,115 @@
+# Example 16: an active-site zoom.
+# The HNH nuclease site of SpCas9 in the catalytic state, PDB 7Z4J
+# (Pacesa et al. 2022, Nature 609:191). One Mg2+ is held by D839 and
+# N863 and by the scissile phosphate of the cleaved target strand, with
+# waters completing the coordination shell.
+#
+# This is the tightest panel class in the stylebook and it follows
+# different rules from an overview:
+#
+#   hide everything that is not the site. Not faded, hidden. At this zoom
+#   a ribbon two shells away is noise that costs contrast.
+#   sticks get heteroatom coloring: carbon takes the domain color, and
+#   oxygen, nitrogen and phosphorus keep element colors. That is the one
+#   place the house palette yields, because a reader identifies atoms by
+#   red and blue faster than by any scheme we could invent.
+#   the backbone cartoon goes pale and thick so it reads as a container
+#   rather than competing with the sticks.
+#   coordination and hydrogen bonds are dashed, thin, and a single muted
+#   color that is in neither the element palette nor the domain palette,
+#   so a dash is never mistaken for an atom or a domain.
+#   labels are plain text on the atom, no box and no leader line. At this
+#   magnification there is room to place them, and a chip with a leader
+#   would out-weigh the chemistry it points at.
+#   silhouettes stay on. They are what separates the foreground sticks
+#   from the backbone behind them.
+open 7z4j
+open ../../palettes/lab_colors.cxc
+open ../../presets/Base/publication_white.cxc
+
+# Strip the scene back to nothing, then add only the site. The base
+# preset turns on every nucleic-acid atom so that ladders and slabs draw,
+# which is right for an overview and is exactly the clutter that ruins a
+# zoom: two whole duplexes end up in frame edge to edge.
+hide #1 atoms
+hide #1 cartoons
+~nucleotides
+
+# One metal, the one in the HNH site. The entry has four, and the others
+# belong to RuvC and to the sgRNA fold.
+show (:MG & /B:1403) atoms
+show (:HOH & (:MG & /B:1403) :<3.0) atoms
+
+# Backbone only within one shell of the metal
+show (:MG & /B:1403) :<9 cartoons
+
+# Backbone neutral and pale, so it reads as a container. Do not give the
+# cartoon the same hue as the sticks in front of it, however tempting the
+# domain colour is: at this zoom the sticks stop being findable.
+color #1 lab_gray_p
+cartoon style xsection oval width 0.8 thickness 0.22
+
+# The site: HNH catalytic residues, the cleaved target strand ends,
+# and the metal
+show /B:839,840,863 atoms
+style /B:839,840,863 stick
+show /c:3 atoms
+show /C:4 atoms
+style (/c:3 | /C:4) stick
+nucleotides (/c:3 | /C:4) atoms
+
+# Heteroatom coloring: carbons take the domain color, elements keep theirs
+color /B:839,840,863 lab_hnh target a
+color /c:3 lab_target target a
+color /C:4 lab_target target a
+color (/B:839,840,863 | /c:3 | /C:4) & N cornflower blue target a
+color (/B:839,840,863 | /c:3 | /C:4) & O firebrick target a
+color (/B:839,840,863 | /c:3 | /C:4) & P goldenrod target a
+
+# Metal and waters as spheres, sized so the metal reads as the centre
+style :MG sphere
+size :MG atomRadius 1.1
+color :MG lab_purple
+style :HOH sphere
+size :HOH atomRadius 0.45
+color :HOH firebrick
+
+size stickRadius 0.22
+
+# Coordination and hydrogen bonds. A single muted colour, thin, dashed.
+#
+# Do not write a bare "show pseudobonds" here. That turns on every
+# pseudobond group in the model, including missing-structure dashes,
+# which at this zoom scatter little specks across the whole panel. Show
+# only the pseudobonds that touch the metal.
+show (:MG & /B:1403) target p
+color (:MG & /B:1403) #8A7FB5 target p
+size pseudobondRadius 0.08
+hbonds /B:839,840,863 restrict (/c:3 | /C:4) reveal false color #8A7FB5 radius 0.08 dashes 8 showDist false
+
+# Plain labels on the atom, no box, no leader
+# Offsets are in Angstrom along the screen axes. Nudge each one by hand
+# until nothing collides; there is no automatic placement.
+label /B:839 residues text "{0.name} {0.number}" height 0.85 color black offset 2.6,-2.6,0
+label /B:840 residues text "{0.name} {0.number}" height 0.85 color black offset -7.5,2.2,0
+label /B:863 residues text "{0.name} {0.number}" height 0.85 color black offset 2.4,-5.4,0
+label /B:1403 residues text "Mg2+" height 0.95 color black offset -1.2,2.6,0
+
+# Frame on the site as a whole, not on the single metal atom. Framing on
+# one atom and then padding out is how you end up with a wide shot of
+# nothing; give view the residues you actually want in the panel.
+#
+# Orientation was chosen by rendering a ring of candidates and looking at
+# them, not guessed. scripts/orbit.sh does that sweep for you. Rotate
+# first and frame second: view changes zoom and centre but not
+# orientation, so a turn after it will swing the site back out of frame.
+windowsize 1000 900
+cofr (:MG & /B:1403)
+turn y 80
+turn x 25
+view (/B:839,840,863 | /c:3 | /C:4 | (:MG & /B:1403)) pad 0.55
+
+2dlabels text "HNH active site" xpos 0.03 ypos 0.95 size 22 color lab_black bold true
+2dlabels text "7Z4J  catalytic state" xpos 0.03 ypos 0.03 size 17 color lab_gray
+
+save active_site.png width 2600 supersample 3

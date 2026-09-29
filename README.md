@@ -1,6 +1,6 @@
 # ChimeraX stylebook
 
-A house style for molecular figures in [UCSF ChimeraX](https://www.cgl.ucsf.edu/chimerax/) **1.12**: a color palette, a set of presets, and fifteen worked examples that render from scratch with one command. Built for the Finkelstein lab, useful to anyone who wants figures from different people in the same paper to look like they belong together.
+A house style for molecular figures in [UCSF ChimeraX](https://www.cgl.ucsf.edu/chimerax/) **1.12**: a color palette, a set of presets, and seventeen worked examples that render from scratch with one command. Built for the Finkelstein lab, useful to anyone who wants figures from different people in the same paper to look like they belong together.
 
 > **Built with LLM assistance.** The scripts, presets and documentation in this repository were drafted with Claude (Anthropic) and then verified by rendering: every example here was actually executed in ChimeraX 1.12 and the resulting PNG inspected. Command syntax was checked against the [official ChimeraX documentation](https://www.cgl.ucsf.edu/chimerax/docs/user/commands/), and every structure accession against the RCSB and EMDB APIs. Treat the stylistic opinions as opinions, and check anything you plan to publish.
 
@@ -71,12 +71,13 @@ palettes/
   cas9_domains.cxc    SpCas9 domain color map, applied to a selected chain
 presets/
   Base/               publication_white, dark_talk, surface_binder
-examples/             fifteen worked figures, each a figure.cxc plus its output
+examples/             seventeen worked figures, each a figure.cxc plus its output
 docs/
   chimerax_commands.md   verified 1.12 command reference for figure work
   reference_styles.md    what we borrowed from which published work
 scripts/
   render.sh           re-render every example, then trim and stamp dpi
+  orbit.sh            render a ring of orientations as one contact sheet
   finish.sh           trim background border, stamp 300 dpi
   gif.sh              make a README-sized GIF from a rendered mp4
   cx                  send commands to a running ChimeraX over REST
@@ -104,6 +105,8 @@ Each folder holds `figure.cxc` and the PNG it produces. Run one with `chimerax -
 | 13 | [Conservation](examples/13_conservation/) | ConSurf grades from a MAFFT alignment, colorblind-safe palette |
 | 14 | [Camera movies](examples/14_camera_movies/) | Spin, rock and zoom, and when each is honest |
 | 15 | [Motion arrows](examples/15_motion_arrows/) | Displacement arrows at true length, with measured distances |
+| 16 | [Active site](examples/16_active_site/) | A tight catalytic-site zoom: metal, coordination dashes, 3D labels |
+| 17 | [Vector field](examples/17_vector_field/) | Per-residue displacement arrows, subsampled and colored by magnitude |
 
 ### 02 State comparison
 
@@ -220,6 +223,34 @@ Which parts moved, in what direction, and how far. This is the still-figure coun
 
 Arrows are annotation, so they are one neutral color rather than the domain color. They run from start centroid to end centroid at true length, never scaled up, and anything under 1.5 Å is dropped because a short arrow reads as a real direction when it is coordinate error. The measured distances are printed beside the figure, since an arrow on a page cannot be measured.
 
+### 16 Active site
+
+The HNH nuclease site with its magnesium, the residues that hold it, the scissile phosphate and the ordered waters. This is the tightest panel class in the book and it inverts several rules: everything outside the site is hidden rather than faded, sticks take element colors because a reader finds oxygen by its red faster than by any scheme we could invent, and the backbone goes neutral and pale so it reads as a container.
+
+![active site](examples/16_active_site/active_site.png)
+
+Orientation here was chosen by looking, not guessing. `scripts/orbit.sh examples/16_active_site` renders a ring of candidate views and stitches them into one contact sheet, which is worth doing for any zoom where a single helix in the wrong place hides the subject.
+
+### 17 Vector field
+
+An arrow per residue, showing which parts of a domain move together and where the hinge sits. Three things make the usual version of this figure unreadable, and all three are fixed here: subsample so it is not a hairball, drop displacements too small to be signal, and color by magnitude so the key does real work instead of every arrow being the same red.
+
+![vector field](examples/17_vector_field/vector_field.png)
+
+The RuvC core carries almost no arrows, which is the internal check: it is the superposition reference, so it should not move. These arrows are true length because this motion is large. Scaling is normal for a smaller change, but then the factor belongs on the figure.
+
+## Three ways to show motion
+
+The book now has three, and they answer different questions.
+
+| | Use when the reader needs to | Scale |
+|---|---|---|
+| [Morph movie](examples/12_morph_movie/) | feel the motion | interpolated, not data |
+| [Motion arrows](examples/15_motion_arrows/) | measure it, per domain | true length |
+| [Vector field](examples/17_vector_field/) | see the pattern, per residue | true length here, often scaled |
+
+A paper usually wants the arrows in the figure and the morph in the supplement.
+
 ## Palette
 
 Categorical colors are Okabe and Ito's eight-color set, which stays distinguishable under protanopia, deuteranopia and tritanopia. Pastel variants are 60 percent color on white, for large cartoon and surface areas where a saturated fill would overwhelm the accents.
@@ -250,6 +281,8 @@ Continuous data uses viridis or cividis. Neither is built into ChimeraX, so writ
 **Nucleotide ladders and slabs need base atoms displayed.** The base presets run `show nucleic atoms` before `nucleotides ladder` for that reason. Apply `nucleotides` after any `hide` that touches nucleic acids.
 
 **`view pad` is a fraction, not a multiplier.** `view pad 0.25` adds a quarter. `view pad 2.5` zooms out until the structure is a dot. It must also be in the same command as the spec: `view /A:775-908 pad 0.25`. On its own line it re-frames every displayed model rather than the selection.
+
+**A bare `show pseudobonds` turns on missing-structure dashes too**, which at active-site zoom scatter little specks across the panel. Show only the pseudobonds you want: `show (:MG & /B:1403) target p`.
 
 **Never hardcode a submodel ID.** `coulombic /A surfaces #1.1` looks right and silently colors nothing, because hydrogen-bond and missing-structure pseudobond groups take submodel numbers ahead of the surface. Omit the option and let the command find the surface, or check with `info models` first.
 

@@ -1,0 +1,53 @@
+# Example 17: a per-residue displacement field.
+# Checkpoint state 7Z4L to catalytic state 7Z4J, Pacesa et al. 2022,
+# Nature 609:191, superposed on the RuvC core.
+#
+# This is the third and finest-grained way this stylebook shows motion:
+#
+#   example 12, a morph, for feeling the motion
+#   example 15, one arrow per domain at true length, for measuring it
+#   this one, an arrow per residue, for seeing which parts of a domain
+#   move together and where a hinge sits
+#
+# Use it when the interesting thing is the pattern rather than the
+# magnitude: a domain swinging as a rigid body gives parallel arrows of
+# graded length, a hinge shows up as a sign change, and a region that
+# refolds gives arrows pointing in unrelated directions.
+#
+# Porcupine plots are usually drawn with the arrows scaled up, because
+# for a small conformational change true-length arrows cannot be seen.
+# This motion is not small, so the arrows here are true length and the
+# caption says so. If you do scale, put the factor on the figure.
+open 7z4l
+open 7z4j
+open ../../palettes/lab_colors.cxc
+
+delete #1/A,C,D
+delete #2/A,C,c,D
+
+# Superpose on the RuvC core, the part that does not move. Every arrow in
+# this figure is a displacement relative to that core.
+matchmaker #2/B:1-59,909-1098 to #1/B:1-59,909-1098
+
+open ../../presets/Base/publication_white.cxc
+
+# Only the start state is shown. The end state stays open because the
+# script needs its coordinates, but drawing both would put a second
+# cartoon behind the arrows for no gain.
+hide #2 models
+color #1/B lab_gray_p
+cartoon style xsection oval width 1.0 thickness 0.28
+
+runscript draw_vectors.py
+
+view #1
+turn y -30
+view #1 pad 0.06
+
+key "#440154:0" #3b528b: #21918c: #5ec962: "#fde725:35+" pos 0.04,0.30 size 0.03,0.36 fontSize 16 labelSide right/bottom colorTreatment blended
+2dlabels text "displacement (Å)" xpos 0.03 ypos 0.72 size 17 color lab_black bold true
+2dlabels text "checkpoint to catalytic" xpos 0.03 ypos 0.95 size 22 color lab_black bold true
+2dlabels text "7Z4L to 7Z4J, superposed on RuvC" xpos 0.03 ypos 0.91 size 15 color lab_gray
+2dlabels text "one arrow per 5th residue, true length" xpos 0.03 ypos 0.04 size 15 color lab_gray
+
+save vector_field.png width 3000 supersample 3
